@@ -10,7 +10,7 @@ script:
 
 after_success:
   - docker build -t sbkohel/multi-client ./client
-  - docker build -t sbkohel/multi-nginx ./multi-nginx
+  - docker build -t sbkohel/multi-nginx ./nginx
   - docker build -t sbkohel/multi-server ./server
   - docker build -t sbkohel/multi-worker ./worker
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
