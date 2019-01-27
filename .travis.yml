@@ -1,0 +1,20 @@
+sudo: required
+servics:
+  - docker
+
+before_install:
+  - docker build -t sbkohel/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run sbkohel/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t sbkohel/multi-client ./client
+  - docker build -t sbkohel/multi-nginx ./multi-nginx
+  - docker build -t sbkohel/multi-server ./server
+  - docker build -t sbkohel/multi-worker ./worker
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push sbkohel/multi-client
+  - docker push sbkohel/multi-nginx
+  - docker push sbkohel/multi-server
+  - docker push sbkohel/multi-worker
